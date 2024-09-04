@@ -1,11 +1,9 @@
 import Character from "../models/character.model";
 import { ICharacter } from "../models/character.model";
 
-// Controlador para obtener personajes con paginación
 export const getCharactersFromDb = async (page: number, limit: number) => {
   const skip = (page - 1) * limit;
 
-  // Consulta a la base de datos con paginación
   const characters = await Character.find().skip(skip).limit(limit).exec();
 
   const total = await Character.countDocuments();
