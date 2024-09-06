@@ -1,17 +1,10 @@
 import { useUserHook } from "../../hooks/userHook/useUserHook";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const RegisterUser: React.FC = () => {
-  const { handleChange, userLogin, onSubmitUser, auth, serUserLogin } =
+  const { handleChange, userLogin, onSubmitUser, serUserLogin } =
     useUserHook();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (auth) {
-      navigate("/");
-    }
-  }, [auth, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +13,7 @@ export const RegisterUser: React.FC = () => {
       username: "",
       password: "",
     });
+    navigate("/")
   };
 
   return (

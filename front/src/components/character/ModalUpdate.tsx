@@ -91,7 +91,7 @@ export const UpdateCharacterModal: React.FC<UpdateCharacterModalProps> = ({
           <div>
             <label className="block text-gray-700">Image URL</label>
             <input
-              type="text"
+              type="url"
               value={characterData.image}
               onChange={(e) => handleChange(e, "image")}
               className="w-full border rounded p-2"
