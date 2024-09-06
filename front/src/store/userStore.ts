@@ -20,6 +20,7 @@ export const userStore = create<UserStoreAttributes>((set) => ({
   createUser: async (data) => {
     const response: AxiosResponse<{ username: string }> =
       await axiosInstance.post("/user/create", data);
+    console.log(response);
     set({ username: response.data.username });
   },
   loginUser: async (data) => {

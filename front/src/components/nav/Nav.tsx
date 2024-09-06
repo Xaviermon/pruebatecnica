@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import logoImage from "../../assets/asset/images/HOWS-ADVISOR-blanco.png";
 import { BarsNav } from "../../assets/Icons";
 
-interface NavBarProps {
-  setIsLoggedIn: (data: boolean) => void;
-}
-
-export const NavBar: React.FC<NavBarProps> = ({ setIsLoggedIn }) => {
+export const NavBar: React.FC = () => {
   const lastScrollTop = useRef(0);
   const [isNavBarVisible, setIsNavBarVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,7 +25,6 @@ export const NavBar: React.FC<NavBarProps> = ({ setIsLoggedIn }) => {
   const handleSession = () => {
     localStorage.setItem("expirate", "true");
     localStorage.setItem("token", "");
-    setIsLoggedIn(true);
     toggleMobileMenu();
   };
 
@@ -42,19 +36,12 @@ export const NavBar: React.FC<NavBarProps> = ({ setIsLoggedIn }) => {
   }, []);
 
   return (
-    <div className="absolute z-10">
+    <div className="z-10">
       <nav
         className={`fixed top-0 left-0 transform ${
           isNavBarVisible ? "translate-y-0" : "-translate-y-72"
         } flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 w-full h-16 shadow-md bg-[#3889F2] transition-transform duration-300`}
       >
-        <Link to="/" className="text-white ml-4">
-          <img
-            src={logoImage}
-            alt="Logo"
-            className="w-20 h-20 object-contain"
-          />
-        </Link>
         <div
           className={`hidden md:flex items-center gap-12 mr-8 ${
             isMobileMenuOpen ? "hidden" : ""
@@ -63,19 +50,11 @@ export const NavBar: React.FC<NavBarProps> = ({ setIsLoggedIn }) => {
           <Link to="/" className="text-white">
             Home
           </Link>
-          <Link to="/zipcodeconstructor" className="text-white">
+          <Link to="/register-user" className="text-white">
             Register
           </Link>
-          <Link to="/blog" className="text-white">
-            Blog
-          </Link>
-
           {sessionExpirate === "true" ? (
-            <Link
-              to="/siginconstructorpage"
-              onClick={toggleMobileMenu}
-              className="text-white"
-            >
+            <Link to="/" onClick={toggleMobileMenu} className="text-white">
               Log In
             </Link>
           ) : (
@@ -94,18 +73,11 @@ export const NavBar: React.FC<NavBarProps> = ({ setIsLoggedIn }) => {
               Home
             </Link>
             <Link
-              to="/zipcodeconstructor"
+              to="/register-user"
               onClick={toggleMobileMenu}
               className="text-white"
             >
               Register
-            </Link>
-            <Link
-              to="/ruta-adicional"
-              onClick={toggleMobileMenu}
-              className="text-white"
-            >
-              Ruta adicional
             </Link>
             {sessionExpirate === "true" ? (
               <Link

@@ -1,4 +1,4 @@
-export interface ICharacter extends Document {
+export interface ICharacter{
   _id?: number;
   id: number;
   name: string;
@@ -10,7 +10,7 @@ export interface ICharacter extends Document {
   created: boolean;
 }
 
-export interface IUser extends Document {
+export interface IUser{
   username: string;
   password: string;
 }

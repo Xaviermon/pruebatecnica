@@ -8,7 +8,7 @@ const axiosInstance: AxiosInstance = axios.create({
 
 interface CharacterStoreAttributes {
   characters: ICharacter[];
-  character: object;
+  character: ICharacter;
   page: number;
   limit: number;
   totalPages: number;
@@ -17,14 +17,23 @@ interface CharacterStoreAttributes {
   getIdCharacter: (id: number) => Promise<void>;
   createCharacter: (data: ICharacter) => Promise<void>;
   updateCharacter: (data: ICharacter) => Promise<void>;
-  deleteCharacter: (data: ICharacter) => Promise<void>;
+  deleteCharacter: (data: number) => Promise<void>;
 }
 
 export const characterStore = create<CharacterStoreAttributes>((set, get) => ({
   characters: [],
-  character: {},
+  character: {
+    id: 0,
+    name: "",
+    status: "",
+    species: "",
+    type: "",
+    gender: "",
+    image: "",
+    created: false,
+  },
   page: 1,
-  limit: 1,
+  limit: 10,
   totalPages: 1,
   totalCharacters: 0,
   getAllCharacter: async (data) => {
@@ -43,37 +52,44 @@ export const characterStore = create<CharacterStoreAttributes>((set, get) => ({
     });
   },
   getIdCharacter: async (id) => {
-    const response: AxiosResponse<{ character: ICharacter }> =
-      await axiosInstance.post(`/character/${id}`);
-    set({ character: response.data.character });
+    const response: AxiosResponse = await axiosInstance.get(
+      `/character/get/${id}`
+    );
+
+    set({ character: response.data });
   },
   createCharacter: async (data) => {
-    const response: AxiosResponse<{ character: ICharacter }> =
-      await axiosInstance.post("/character/create", data);
+    const response: AxiosResponse = await axiosInstance.post(
+      "/character/create",
+      data
+    );
+    console.log(response.data);
+
     set((state) => ({
-      characters: [...state.characters, response.data.character],
+      characters: [...state.characters, response.data],
     }));
   },
   updateCharacter: async (data) => {
-    const response: AxiosResponse<{ updateCharacter: ICharacter }> =
-      await axiosInstance.put(`/character/update/${data.id}`, data);
+    const response: AxiosResponse = await axiosInstance.put(
+      `/character/update/${data.id}`,
+      data
+    );
     const { characters } = get();
-    const newCharacter = structuredClone(characters);
-    const indexCharacter = characters.findIndex((elem) => elem.id === data.id);
-
-    newCharacter[indexCharacter] = response.data.updateCharacter;
-
-    set({ characters: newCharacter });
+    const updatedCharacters = characters.map((character) =>
+      character._id === data.id ? response.data : character
+    );
+    set({ characters: updatedCharacters });
+    console.log(`Updated character: ${response.data.name}`);
   },
-  deleteCharacter: async (data) => {
-    const response: AxiosResponse<{ findCharacter: ICharacter }> =
-      await axiosInstance.put(`/character/delete/${data.id}`, data);
+  deleteCharacter: async (id) => {
+    const response: AxiosResponse = await axiosInstance.delete(
+      `/character/delete/${id}`
+    );
     const { characters } = get();
-    const newCharacter = structuredClone(characters);
-    const indexCharacter = characters.findIndex((elem) => elem.id === data.id);
-
-    newCharacter[indexCharacter] = response.data.findCharacter;
-
-    set({ characters: newCharacter });
+    const updatedCharacters = characters.filter(
+      (character) => character._id !== id
+    );
+    set({ characters: updatedCharacters });
+    console.log(`delete ${response.data}`);
   },
 }));

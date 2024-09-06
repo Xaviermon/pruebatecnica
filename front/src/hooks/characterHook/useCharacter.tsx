@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { characterStore } from "../store/characterStore";
-import { ICharacter } from "../types/character";
+import { characterStore } from "../../store/characterStore";
+import { ICharacter } from "../../types/character";
 
 
 export function useCharacter() {
@@ -9,7 +9,7 @@ export function useCharacter() {
 
   useEffect(() => {
     const newCharacters = charactersData.map((item) => ({
-      id: item._id,
+      id: item._id || 0,
       name: item.name,
       status: item.status,
       species: item.species,

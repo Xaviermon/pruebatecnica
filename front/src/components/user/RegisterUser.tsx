@@ -2,20 +2,20 @@ import { useUserHook } from "../../hooks/userHook/useUserHook";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const LoginUser: React.FC = () => {
-  const { handleChange, userLogin, loginUserSubmit, auth, serUserLogin } =
+export const RegisterUser: React.FC = () => {
+  const { handleChange, userLogin, onSubmitUser, auth, serUserLogin } =
     useUserHook();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (auth) {
-      navigate("/characters");
+      navigate("/");
     }
   }, [auth, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    loginUserSubmit(userLogin);
+    onSubmitUser(userLogin);
     serUserLogin({
       username: "",
       password: "",
@@ -25,7 +25,7 @@ export const LoginUser: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label

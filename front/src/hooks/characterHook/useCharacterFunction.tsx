@@ -1,5 +1,5 @@
-import { characterStore } from "../store/characterStore";
-import { ICharacter } from "../types/character";
+import { characterStore } from "../../store/characterStore";
+import { ICharacter } from "../../types/character";
 import { useState, ChangeEvent } from "react";
 
 export function useCharacterFuntion() {
@@ -13,6 +13,7 @@ export function useCharacterFuntion() {
     createCharacter,
     updateCharacter,
     deleteCharacter,
+    character,
   } = characterStore();
 
   const [characterData, setCharacterData] = useState({
@@ -23,12 +24,13 @@ export function useCharacterFuntion() {
     type: "",
     gender: "",
     image: "",
-    created: false,
+    created: true,
   });
-
+  
+  
   const handleChange = (
     e: ChangeEvent<HTMLInputElement>,
-    fieldName: keyof ICharacter
+    fieldName: string
   ): void => {
     const { value } = e.target;
     setCharacterData({ ...characterData, [fieldName]: value });
@@ -48,7 +50,7 @@ export function useCharacterFuntion() {
       console.log(error);
     }
   };
-  const onDeleteCharacter = async (data: ICharacter) => {
+  const onDeleteCharacter = async (data: number) => {
     try {
       await deleteCharacter(data);
     } catch (error) {
@@ -56,6 +58,8 @@ export function useCharacterFuntion() {
     }
   };
   const onGetCharacterId = async (id: number) => {
+    console.log(id);
+    
     try {
       await getIdCharacter(id);
     } catch (error) {
@@ -82,5 +86,8 @@ export function useCharacterFuntion() {
     onGetCharacterId,
     handlePageChange,
     handlePerRowsChange,
+    characterData,
+    setCharacterData,
+    character,
   };
 }
